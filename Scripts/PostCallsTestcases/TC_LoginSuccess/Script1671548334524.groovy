@@ -18,38 +18,22 @@ import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 import com.kms.katalon.core.util.KeywordUtil as KeywordUtil
 
-response = WS.sendRequest(findTestObject('GetCalls/GetUsers'), FailureHandling.OPTIONAL)
+response = WS.sendRequest(findTestObject('PostCalls/LoginSuccess'))
 
-conditionStatusCode = WS.verifyResponseStatusCode(response, 200, FailureHandling.OPTIONAL)
+conditionStatusCode = WS.verifyResponseStatusCode(response, 200)
 
 if (conditionStatusCode) {
-    KeywordUtil.logInfo('Status code is correct.')
+	KeywordUtil.logInfo('Status code is correct.')
 
-    conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/GetUsers.txt', FailureHandling.OPTIONAL)
+	conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/LoginSuccess.txt', FailureHandling.OPTIONAL)
 
-    if (conditionSchema) {
-        KeywordUtil.logInfo('Response schema is correct.')
-
-        conditionResultCount = WS.verifyElementsCount(response, 'data', 6, FailureHandling.OPTIONAL)
-		if(conditionResultCount) {
-			KeywordUtil.logInfo('Results count is correct.')
-			
-			conditionResponseParam = WS.verifyElementPropertyValue(response, 'data[1].first_name', 'Lindsay', FailureHandling.OPTIONAL)
-			if(conditionResponseParam) {
-				KeywordUtil.markPassed('User first name is correct.')
-			}
-			else {
-				KeywordUtil.markFailedAndStop('Expected user is missing from response.')
-			}
-		}
-		else {
-			KeywordUtil.markError('Results count is incorrect.')
-		}
+	if (conditionSchema) {
+		KeywordUtil.markPassed('Response schema is correct.')
 		
-    } else {
-        KeywordUtil.markFailedAndStop('Response schema is incorrect.')
-    }
+	} else {
+		KeywordUtil.markFailedAndStop('Response schema is incorrect.')
+	}
 } else {
-    KeywordUtil.markFailedAndStop('Status code is incorrect')
+	KeywordUtil.markFailedAndStop('Status code is incorrect')
 }
 

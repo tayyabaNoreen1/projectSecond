@@ -16,8 +16,40 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
+import com.kms.katalon.core.util.KeywordUtil as KeywordUtil
 
 response = WS.sendRequest(findTestObject('GetCalls/GetResourceList'))
 
-WS.verifyResponseStatusCode(response, 200)
+conditionStatusCode = WS.verifyResponseStatusCode(response, 200)
+
+if (conditionStatusCode) {
+	KeywordUtil.logInfo('Status code is correct.')
+
+	conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/GetResources.txt', FailureHandling.OPTIONAL)
+
+	if (conditionSchema) {
+		KeywordUtil.logInfo('Response schema is correct.')
+
+		conditionResultCount = WS.verifyElementsCount(response, 'data', 6, FailureHandling.OPTIONAL)
+		if(conditionResultCount) {
+			KeywordUtil.logInfo('Results count is correct.')
+			
+			conditionResponseParam = WS.verifyElementPropertyValue(response, 'data[1].year', '2001', FailureHandling.OPTIONAL)
+			if(conditionResponseParam) {
+				KeywordUtil.markPassed('Year is correct.')
+			}
+			else {
+				KeywordUtil.markFailedAndStop('Year is incorrect.')
+			}
+		}
+		else {
+			KeywordUtil.markError('Results count is incorrect.')
+		}
+		
+	} else {
+		KeywordUtil.markFailedAndStop('Response schema is incorrect.')
+	}
+} else {
+	KeywordUtil.markFailedAndStop('Status code is incorrect')
+}
 

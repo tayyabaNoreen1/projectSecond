@@ -16,8 +16,21 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
+import com.kms.katalon.core.util.KeywordUtil as KeywordUtil
 
 response = WS.sendRequest(findTestObject('GetCalls/ResourceNotFound'))
 
-WS.verifyResponseStatusCode(response, 404)
+conditionStatusCode = WS.verifyResponseStatusCode(response, 404)
 
+if (conditionStatusCode) {
+	KeywordUtil.logInfo('Status code is correct.')
+	
+	conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/ResourceNotFound.txt', FailureHandling.OPTIONAL)
+	if(conditionSchema) {
+		KeywordUtil.markPassed('Response schema is correct.')
+	}
+	else {
+		KeywordUtil.markFailedAndStop('Response schema is incorrect.')
+	}
+	
+}

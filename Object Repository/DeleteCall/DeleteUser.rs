@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WebServiceRequestEntity>
    <description></description>
-   <name>GetUsers</name>
+   <name>DeleteUser</name>
    <tag></tag>
-   <elementGuidId>9eb9ca90-1fb3-451e-946d-13d57e2c7236</elementGuidId>
+   <elementGuidId>aef69c54-7534-47a1-a016-edb7afd5bd9a</elementGuidId>
    <selectorMethod>BASIC</selectorMethod>
    <useRalativeImagePath>false</useRalativeImagePath>
    <connectionTimeout>-1</connectionTimeout>
@@ -14,8 +14,8 @@
    <katalonVersion>8.5.1</katalonVersion>
    <maxResponseSize>-1</maxResponseSize>
    <migratedVersion>5.4.1</migratedVersion>
-   <restRequestMethod>GET</restRequestMethod>
-   <restUrl>https://reqres.in/api/users?page=2</restUrl>
+   <restRequestMethod>DELETE</restRequestMethod>
+   <restUrl>https://reqres.in/api/users/?id=2</restUrl>
    <serviceType>RESTful</serviceType>
    <soapBody></soapBody>
    <soapHeader></soapHeader>

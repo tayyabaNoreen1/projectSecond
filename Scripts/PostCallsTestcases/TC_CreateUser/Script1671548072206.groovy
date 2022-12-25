@@ -18,38 +18,38 @@ import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 import com.kms.katalon.core.util.KeywordUtil as KeywordUtil
 
-response = WS.sendRequest(findTestObject('GetCalls/GetUsers'), FailureHandling.OPTIONAL)
+response = WS.sendRequest(findTestObject('PostCalls/CreateUser'))
 
-conditionStatusCode = WS.verifyResponseStatusCode(response, 200, FailureHandling.OPTIONAL)
+conditionStatusCode = WS.verifyResponseStatusCode(response, 201)
 
 if (conditionStatusCode) {
-    KeywordUtil.logInfo('Status code is correct.')
+	KeywordUtil.logInfo('Status code is correct.')
 
-    conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/GetUsers.txt', FailureHandling.OPTIONAL)
+	conditionSchema = WS.validateJsonAgainstSchema(response, 'Resources/CreateUser.txt', FailureHandling.OPTIONAL)
 
-    if (conditionSchema) {
-        KeywordUtil.logInfo('Response schema is correct.')
+	if (conditionSchema) {
+		KeywordUtil.logInfo('Response schema is correct.')
 
-        conditionResultCount = WS.verifyElementsCount(response, 'data', 6, FailureHandling.OPTIONAL)
-		if(conditionResultCount) {
-			KeywordUtil.logInfo('Results count is correct.')
+//		conditionResultCount = WS.verifyElementsCount(response, 'name', 1, FailureHandling.OPTIONAL)
+//		if(conditionResultCount) {
+//			KeywordUtil.logInfo('Results count is correct.')  //How to verify count of all parameters for single user?
 			
-			conditionResponseParam = WS.verifyElementPropertyValue(response, 'data[1].first_name', 'Lindsay', FailureHandling.OPTIONAL)
+			conditionResponseParam = WS.verifyElementPropertyValue(response, 'job', 'leader', FailureHandling.OPTIONAL)
 			if(conditionResponseParam) {
-				KeywordUtil.markPassed('User first name is correct.')
+				KeywordUtil.markPassed('Created user job is correct.')
 			}
 			else {
-				KeywordUtil.markFailedAndStop('Expected user is missing from response.')
+				KeywordUtil.markFailedAndStop('Created user job is incorrect.')
 			}
-		}
-		else {
-			KeywordUtil.markError('Results count is incorrect.')
-		}
+//		}
+//		else {
+//			KeywordUtil.markError('Results count is incorrect.')
+//		}
 		
-    } else {
-        KeywordUtil.markFailedAndStop('Response schema is incorrect.')
-    }
+	} else {
+		KeywordUtil.markFailedAndStop('Response schema is incorrect.')
+	}
 } else {
-    KeywordUtil.markFailedAndStop('Status code is incorrect')
+	KeywordUtil.markFailedAndStop('Status code is incorrect')
 }
 
